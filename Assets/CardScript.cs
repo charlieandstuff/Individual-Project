@@ -12,13 +12,13 @@ public class CardScript : MonoBehaviour
     //this line shows the data onto the text
     public TMPro.TextMeshPro CardNameGUI;
 
-    public string PowerStat;
+    public int PowerStat;
     public TMPro.TextMeshPro PowerStatGUI;
 
-    public string ToughnessStat;
+    public int ToughnessStat;
     public TMPro.TextMeshPro ToughnessStatGUI;
 
-    public string CostStat;
+    public int CostStat;
     public TMPro.TextMeshPro CostStatGUI;
 
     

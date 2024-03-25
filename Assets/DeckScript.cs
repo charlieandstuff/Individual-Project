@@ -1,5 +1,7 @@
 
 
+
+
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -15,10 +17,12 @@ public class DeckScript : MonoBehaviour
     public List<GameObject> Deck = new List<GameObject>();
 
     public List<GameObject> Hand = new List<GameObject>();
+
+    public List<GameObject> Goats = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
-
+        
 
 
 
@@ -44,10 +48,10 @@ public class DeckScript : MonoBehaviour
             //CardScript newCard = new CardScript();
             GameObject newGO = Instantiate(prefab, new Vector3(xpos, 0, 25), Quaternion.identity);
             CardScript newCard = newGO.GetComponent<CardScript>();
-            newCard.CardName = cols[0];
-            newCard.CostStat = cols[1];
-            newCard.PowerStat = cols[2];
-            newCard.ToughnessStat = cols[3];
+            newCard.CardName =  cols[0];
+            newCard.CostStat = int.Parse(cols[1]);
+            newCard.PowerStat = int.Parse(cols[2]);
+            newCard.ToughnessStat = int.Parse(cols[3]);
             Deck.Add(newGO);
             xpos = xpos + 3.5f;
 
@@ -64,6 +68,7 @@ public class DeckScript : MonoBehaviour
 
         ShuffleDeck();
         DrawThreeCards();
+        SpawnGoats();
     }
 
     public void DrawThreeCards()
@@ -76,14 +81,33 @@ public class DeckScript : MonoBehaviour
     
         
     }
-
-
-    public void DrawCard()
+    public void DrawGoat()
+    {
+        Hand.Add(Goats[0]);
+        Goats.RemoveAt(0);
+    }
+    
+    public void SpawnGoats()
+    {
+        float ypos = 0;
+        for (int i = 0; i < 10; i++)
+        {
+            GameObject newGO = Instantiate(prefab, new Vector4(0, ypos, 25), Quaternion.identity);
+            CardScript newCard = newGO.GetComponent<CardScript>();
+            newCard.CardName = "goat";
+            newCard.CostStat = 0;
+            newCard.PowerStat = 0;
+            newCard.ToughnessStat = 1;
+            Goats.Add(newGO);
+            ypos = ypos + 0.15f;
+        }
+    }
+    public void DrawDeckCard()
     {
         // add to hand
         //Instantiate(Deck[0]);
         Hand.Add(Deck[0]);
-        
+
         Deck.RemoveAt(0);
     }
     
