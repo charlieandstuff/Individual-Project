@@ -19,6 +19,9 @@ public class DeckScript : MonoBehaviour
     public List<GameObject> Hand = new List<GameObject>();
 
     public List<GameObject> Goats = new List<GameObject>();
+
+    public float handxPos = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,7 +37,7 @@ public class DeckScript : MonoBehaviour
         string database = reader.ReadToEnd();
 
         string[] lines = database.Split('\n');
-        float xpos = 0;
+        float y2pos = 4.5f;
         foreach (string line in lines)
         {
             
@@ -46,14 +49,14 @@ public class DeckScript : MonoBehaviour
             //print(cols[2]);
             //print(cols[3]);
             //CardScript newCard = new CardScript();
-            GameObject newGO = Instantiate(prefab, new Vector3(xpos, 0, 25), Quaternion.identity);
+            GameObject newGO = Instantiate(prefab, new Vector3(8, y2pos, 7.5f), Quaternion.identity);
             CardScript newCard = newGO.GetComponent<CardScript>();
             newCard.CardName =  cols[0];
             newCard.CostStat = int.Parse(cols[1]);
             newCard.PowerStat = int.Parse(cols[2]);
             newCard.ToughnessStat = int.Parse(cols[3]);
             Deck.Add(newGO);
-            xpos = xpos + 3.5f;
+            y2pos = y2pos + 0.15f;
 
 
             // this is so the function runs on the start of the program
@@ -89,10 +92,10 @@ public class DeckScript : MonoBehaviour
     
     public void SpawnGoats()
     {
-        float ypos = 0;
+        float ypos = 4.5f;
         for (int i = 0; i < 10; i++)
         {
-            GameObject newGO = Instantiate(prefab, new Vector4(0, ypos, 25), Quaternion.identity);
+            GameObject newGO = Instantiate(prefab, new Vector3(8, ypos, 2), Quaternion.identity);
             CardScript newCard = newGO.GetComponent<CardScript>();
             newCard.CardName = "goat";
             newCard.CostStat = 0;
