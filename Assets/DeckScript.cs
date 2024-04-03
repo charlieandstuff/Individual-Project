@@ -10,7 +10,7 @@ using UnityEngine.XR;
 public class DeckScript : MonoBehaviour
 {
 
-  
+    float CardPos = -12;
 
     public GameObject prefab;
 
@@ -79,7 +79,9 @@ public class DeckScript : MonoBehaviour
         for (int i = 0; i < 3; i++) 
         {
             Hand.Add(Deck[0]);
+            Deck[0].transform.position = new Vector3(CardPos, 6, -4.5f);
             Deck.RemoveAt(0);
+            CardPos = CardPos + 3;
         }
     
         
@@ -87,7 +89,9 @@ public class DeckScript : MonoBehaviour
     public void DrawGoat()
     {
         Hand.Add(Goats[0]);
+        Goats[0].transform.position = new Vector3(CardPos, 6, -4.5f);
         Goats.RemoveAt(0);
+        CardPos = CardPos + 3;
     }
     
     public void SpawnGoats()
@@ -105,13 +109,16 @@ public class DeckScript : MonoBehaviour
             ypos = ypos + 0.15f;
         }
     }
+
+    
     public void DrawDeckCard()
     {
         // add to hand
         //Instantiate(Deck[0]);
         Hand.Add(Deck[0]);
-
+        Deck[0].transform.position = new Vector3(CardPos, 6, -4.5f);
         Deck.RemoveAt(0);
+        CardPos = CardPos + 3;
     }
     
     
