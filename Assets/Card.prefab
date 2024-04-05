@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2225733544893085879}
   - component: {fileID: 2556462248588437790}
   - component: {fileID: 6165210558732480528}
-  - component: {fileID: 6210543643638127816}
   m_Layer: 0
   m_Name: outline
   m_TagString: Untagged
@@ -86,27 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6210543643638127816
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 369105959896312804}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2737782621850013932
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,6 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2707954503594177454}
   - component: {fileID: 6881258812737110941}
+  - component: {fileID: 5482604295999958510}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -161,12 +140,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CardName: 
   CardNameGUI: {fileID: 8743464773599069653}
-  PowerStat: 
+  PowerStat: 0
   PowerStatGUI: {fileID: 5195735965379053378}
-  ToughnessStat: 
+  ToughnessStat: 0
   ToughnessStatGUI: {fileID: 5064036380985007524}
-  CostStat: 
+  CostStat: 0
   CostStatGUI: {fileID: 2167415405374382410}
+--- !u!65 &5482604295999958510
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2737782621850013932}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.891178, y: 0.17347622, z: 4.410305}
+  m_Center: {x: 1.1878322, y: -4.3613515, z: -4.5997148}
 --- !u!1 &3980650758292525559
 GameObject:
   m_ObjectHideFlags: 0
@@ -528,7 +528,6 @@ GameObject:
   - component: {fileID: 5094385303990766195}
   - component: {fileID: 7215582178181360814}
   - component: {fileID: 3702889045412994426}
-  - component: {fileID: 2412027373445750848}
   m_Layer: 0
   m_Name: Card Inside
   m_TagString: Untagged
@@ -603,27 +602,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2412027373445750848
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5867509405684236986}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6198873108600610395
 GameObject:
   m_ObjectHideFlags: 0
@@ -1160,7 +1138,6 @@ GameObject:
   - component: {fileID: 8866850680507472950}
   - component: {fileID: 9023097353477184574}
   - component: {fileID: 2258155715118223064}
-  - component: {fileID: 2449016582020937782}
   m_Layer: 0
   m_Name: card image/3d
   m_TagString: Untagged
@@ -1235,24 +1212,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2449016582020937782
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8639384689698421777}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}

@@ -9,6 +9,7 @@ using UnityEngine.XR;
 
 public class DeckScript : MonoBehaviour
 {
+    public Camera PlayerCamera;
 
     float CardPos = -12;
 
@@ -25,7 +26,7 @@ public class DeckScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
 
 
 
@@ -40,7 +41,7 @@ public class DeckScript : MonoBehaviour
         float y2pos = 4.5f;
         foreach (string line in lines)
         {
-            
+
 
 
             string[] cols = line.Split(',');
@@ -51,7 +52,7 @@ public class DeckScript : MonoBehaviour
             //CardScript newCard = new CardScript();
             GameObject newGO = Instantiate(prefab, new Vector3(8, y2pos, 7.5f), Quaternion.identity);
             CardScript newCard = newGO.GetComponent<CardScript>();
-            newCard.CardName =  cols[0];
+            newCard.CardName = cols[0];
             newCard.CostStat = int.Parse(cols[1]);
             newCard.PowerStat = int.Parse(cols[2]);
             newCard.ToughnessStat = int.Parse(cols[3]);
@@ -60,8 +61,8 @@ public class DeckScript : MonoBehaviour
 
 
             // this is so the function runs on the start of the program
-            
-            
+
+
         }
 
 
@@ -76,15 +77,15 @@ public class DeckScript : MonoBehaviour
 
     public void DrawThreeCards()
     {
-        for (int i = 0; i < 3; i++) 
+        for (int i = 0; i < 3; i++)
         {
             Hand.Add(Deck[0]);
             Deck[0].transform.position = new Vector3(CardPos, 6, -4.5f);
             Deck.RemoveAt(0);
             CardPos = CardPos + 3;
         }
-    
-        
+
+
     }
     public void DrawGoat()
     {
@@ -93,7 +94,7 @@ public class DeckScript : MonoBehaviour
         Goats.RemoveAt(0);
         CardPos = CardPos + 3;
     }
-    
+
     public void SpawnGoats()
     {
         float ypos = 4.5f;
@@ -110,7 +111,7 @@ public class DeckScript : MonoBehaviour
         }
     }
 
-    
+
     public void DrawDeckCard()
     {
         // add to hand
@@ -120,8 +121,8 @@ public class DeckScript : MonoBehaviour
         Deck.RemoveAt(0);
         CardPos = CardPos + 3;
     }
-    
-    
+
+
     //swap function to shuffle the deck
     public void swap(int index1, int index2)
     {
@@ -134,13 +135,38 @@ public class DeckScript : MonoBehaviour
     //
     public void ShuffleDeck()
     {
-        for (int i = 0; i < 100; i++) 
+        for (int i = 0; i < 100; i++)
         {
-            int random = Random.Range(0,Deck.Count-1);
+            int random = Random.Range(0, Deck.Count - 1);
             // grab a random card
             // swap it with card 0
-            swap(0,random);
+            swap(0, random);
 
+        }
+    }
+
+
+
+    private RaycastHit GetRayFromScreen() //returns the point of the screen the mouse is interacting with
+    {
+        Ray ray = PlayerCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit)) { print(hit.transform.name); }
+        return hit;
+    }
+
+
+    private void SelectCard()
+        {
+
+        }
+
+    private void Update()
+    {
+        RaycastHit hit = GetRayFromScreen();
+        if (hit.transform != null)
+        {
+            
         }
     }
 }
