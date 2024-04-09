@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 5482604295999958510}
   m_Layer: 0
   m_Name: Card
-  m_TagString: Untagged
+  m_TagString: Card
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f27e80f8ab0bcc41aa36f09a41d2024, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Selected: 0
   CardName: 
   CardNameGUI: {fileID: 8743464773599069653}
   PowerStat: 0
@@ -146,6 +147,8 @@ MonoBehaviour:
   ToughnessStatGUI: {fileID: 5064036380985007524}
   CostStat: 0
   CostStatGUI: {fileID: 2167415405374382410}
+  LerpSpeed: 0.1
+  Start_Time: 0
 --- !u!65 &5482604295999958510
 BoxCollider:
   m_ObjectHideFlags: 0

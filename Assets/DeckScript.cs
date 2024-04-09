@@ -27,9 +27,6 @@ public class DeckScript : MonoBehaviour
     void Start()
     {
 
-
-
-
         string path = "Assets/cards.txt";
 
         //Read the text from directly from the test.txt file
@@ -37,48 +34,49 @@ public class DeckScript : MonoBehaviour
 
         string database = reader.ReadToEnd();
 
+
         string[] lines = database.Split('\n');
         float y2pos = 4.5f;
+
+
+
         foreach (string line in lines)
-        {
-
-
-
+        { 
+            //this line splits the string at each comma to get seperated values
             string[] cols = line.Split(',');
-            //print(cols[0]);
-            //print(cols[1]);
-            //print(cols[2]);
-            //print(cols[3]);
-            //CardScript newCard = new CardScript();
+
+            //creates a new card for each seperate card and puts them apart
             GameObject newGO = Instantiate(prefab, new Vector3(8, y2pos, 7.5f), Quaternion.identity);
             CardScript newCard = newGO.GetComponent<CardScript>();
+
+            //each of these make the seperated values into the stats which is used in the "card script"
             newCard.CardName = cols[0];
             newCard.CostStat = int.Parse(cols[1]);
             newCard.PowerStat = int.Parse(cols[2]);
             newCard.ToughnessStat = int.Parse(cols[3]);
+
+            //adds the  new card to the "Deck Script"
             Deck.Add(newGO);
+
+            //this variabl;e is used to make the illusion of the cards being ontop of each other
             y2pos = y2pos + 0.15f;
-
-
-            // this is so the function runs on the start of the program
-
-
         }
 
-
-
-
+        // these run the functions at the start of scene
         reader.Close();
-
         ShuffleDeck();
         DrawThreeCards();
         SpawnGoats();
     }
 
+
+
     public void DrawThreeCards()
     {
+        // used to draw cards at start of game
         for (int i = 0; i < 3; i++)
         {
+            // adds the card in position Deck[0] into the hand list and removes it from the position of Deck[0]
             Hand.Add(Deck[0]);
             Deck[0].transform.position = new Vector3(CardPos, 6, -4.5f);
             Deck.RemoveAt(0);
@@ -89,6 +87,7 @@ public class DeckScript : MonoBehaviour
     }
     public void DrawGoat()
     {
+        //function to draw from an alternate deck and garuntees a palyable card
         Hand.Add(Goats[0]);
         Goats[0].transform.position = new Vector3(CardPos, 6, -4.5f);
         Goats.RemoveAt(0);
@@ -126,6 +125,7 @@ public class DeckScript : MonoBehaviour
     //swap function to shuffle the deck
     public void swap(int index1, int index2)
     {
+        //this function is used as a shuffle by randomly swapping the cards
         GameObject temp = Deck[index1];
         Deck[index1] = Deck[index2];
         Deck[index2] = temp;
@@ -137,6 +137,7 @@ public class DeckScript : MonoBehaviour
     {
         for (int i = 0; i < 100; i++)
         {
+            //selects a random card to swap deck[0] with
             int random = Random.Range(0, Deck.Count - 1);
             // grab a random card
             // swap it with card 0
@@ -156,17 +157,14 @@ public class DeckScript : MonoBehaviour
     }
 
 
-    private void SelectCard()
-        {
 
-        }
 
-    private void Update()
+    private void Update() // to fix errors when mouse isnt inerating with something on the screen
     {
         RaycastHit hit = GetRayFromScreen();
-        if (hit.transform != null)
+        if (hit.transform != null && hit.transform.CompareTag("Card"))
         {
-            
+            hit.transform.GetComponent<CardScript>().Select_Card();
         }
     }
 }

@@ -21,8 +21,9 @@ public class CardScript : MonoBehaviour
     public int CostStat;
     public TMPro.TextMeshPro CostStatGUI;
 
-    
-
+    //the two floats are used to determine how long a object has been "selected"
+    public float LerpSpeed = 0;
+    public float Start_Time = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +38,7 @@ public class CardScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (Selected)
         {
             LerpCloser();
@@ -49,13 +51,23 @@ public class CardScript : MonoBehaviour
 
     public void LerpCloser()
     {
-        print("closer");
+        transform.position = Vector3.Lerp(new Vector3(0, 0, 0), new Vector3(0, 10, 0), LerpSpeed*(Time.time - Start_Time) );
+        print(LerpSpeed * (Start_Time - Time.time));
     }
 
     public void LerpBack()
     {
-        print("backerer");
+        
     }
-    //skin walker,4,7,4
-    //cave bear,4,6,8
+  
+
+    public void Select_Card ()
+    {
+        if (!Selected)
+        {
+        Selected = true;
+        Start_Time = Time.time;
+        }
+        
+    }
 }
