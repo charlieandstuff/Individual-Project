@@ -147,8 +147,9 @@ MonoBehaviour:
   ToughnessStatGUI: {fileID: 5064036380985007524}
   CostStat: 0
   CostStatGUI: {fileID: 2167415405374382410}
-  LerpSpeed: 0.1
+  LerpSpeed: 10
   Start_Time: 0
+  Cardpos: {x: 0, y: 0, z: 0}
 --- !u!65 &5482604295999958510
 BoxCollider:
   m_ObjectHideFlags: 0

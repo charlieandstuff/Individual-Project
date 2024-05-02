@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEditor;
+using Unity.VisualScripting;
 public class CardScript : MonoBehaviour
 {
 
     public bool Selected;
+    public bool lerped = false;
+
     //this stores the data
     public string CardName;
     //this line shows the data onto the text
@@ -24,6 +27,8 @@ public class CardScript : MonoBehaviour
     //the two floats are used to determine how long a object has been "selected"
     public float LerpSpeed = 0;
     public float Start_Time = 0;
+    public Vector3 Cardpos;
+
 
     // Start is called before the first frame update
     void Start()
@@ -38,36 +43,38 @@ public class CardScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         if (Selected)
         {
-            LerpCloser();
+            if (Input.GetMouseButtonDown(0))
+            {
+
+            }
         }
-        else
-        {
-            LerpBack();
-        }
+       
     }
 
-    public void LerpCloser()
-    {
-        transform.position = Vector3.Lerp(new Vector3(0, 0, 0), new Vector3(0, 10, 0), LerpSpeed*(Time.time - Start_Time) );
-        print(LerpSpeed * (Start_Time - Time.time));
-    }
+    //public void LerpCloser()
+    //{
+    //    transform.position = Vector3.Lerp(Cardpos, Cardpos + new Vector3(0, 0.5f, 0), LerpSpeed * (Time.time - Start_Time));
+    //    print(LerpSpeed * (Start_Time - Time.time));
+    //    lerped = true;
+    //}
 
-    public void LerpBack()
-    {
-        
-    }
-  
+    //public void LerpBack()
+    //{
+    //    transform.position = Vector3.Lerp(Cardpos + new Vector3(0, 0.5f, 0), Cardpos, LerpSpeed * (Time.time - Start_Time));
+    //}
 
-    public void Select_Card ()
+
+    public void Select_Card()
     {
         if (!Selected)
         {
-        Selected = true;
-        Start_Time = Time.time;
+            //Cardpos = transform.position;
+            Selected = true;
+            Start_Time = Time.time;
         }
-        
+
     }
 }
