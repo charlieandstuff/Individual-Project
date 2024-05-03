@@ -1,5 +1,9 @@
 
-
+//todo
+// make a "playedCards" list
+// make a "enemyplayedCards" list
+// make it so the cards can attack
+// 
 
 
 using System.Collections.Generic;
@@ -20,6 +24,8 @@ public class DeckScript : MonoBehaviour
     public List<GameObject> Hand = new List<GameObject>();
 
     public List<GameObject> Goats = new List<GameObject>();
+
+    public List<GameObject> PlayedCards = new List<GameObject>();
 
     public float handxPos = 0;
 
