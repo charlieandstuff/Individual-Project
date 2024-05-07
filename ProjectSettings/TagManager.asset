@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Card
+  - Lane
   layers:
   - Default
   - TransparentFX

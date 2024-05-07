@@ -48,7 +48,8 @@ public class CardScript : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-
+                
+               
             }
         }
        

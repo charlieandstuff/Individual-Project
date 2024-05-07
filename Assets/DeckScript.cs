@@ -29,6 +29,11 @@ public class DeckScript : MonoBehaviour
 
     public float handxPos = 0;
 
+    public GameObject Selected;
+
+    public List<GameObject> BeforePlayed = new List<GameObject>();
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -67,6 +72,11 @@ public class DeckScript : MonoBehaviour
             //this variabl;e is used to make the illusion of the cards being ontop of each other
             y2pos = y2pos + 0.15f;
         }
+
+        PlayedCards.Capacity = 4;
+
+
+
 
         // these run the functions at the start of scene
         reader.Close();
@@ -168,9 +178,23 @@ public class DeckScript : MonoBehaviour
     private void Update() // to fix errors when mouse isnt inerating with something on the screen
     {
         RaycastHit hit = GetRayFromScreen();
-        if (hit.transform != null && hit.transform.CompareTag("Card"))
+        if (hit.transform != null && hit.transform.CompareTag("Card") && Input.GetMouseButtonDown(0) && Hand.Contains(hit.transform.gameObject))
         {
             hit.transform.GetComponent<CardScript>().Select_Card();
+            Selected = hit.transform.gameObject;
+            Hand.Remove(Selected);
+
         }
+
+        if (Input.GetMouseButtonDown(0) && Selected != null && hit.transform != null && hit.transform.CompareTag("Lane"))
+        {
+            print (Selected.transform.position.ToString());
+            Selected.transform.position = hit.transform.position;
+            print (Selected.transform.position.ToString());
+            print (hit.transform.position.ToString());
+        }
+
+
+
     }
 }
