@@ -168,14 +168,18 @@ public class DeckScript : MonoBehaviour
     {
         Ray ray = PlayerCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit)) { print(hit.transform.name); }
+        if (Physics.Raycast(ray, out hit))
+        {
+           
+        }
         return hit;
+
     }
 
 
 
 
-    private void Update() // to fix errors when mouse isnt inerating with something on the screen
+    private void Update() // to fix errors when mouse isnt ineracting with something on the screen
     {
         RaycastHit hit = GetRayFromScreen();
         if (hit.transform != null && hit.transform.CompareTag("Card") && Input.GetMouseButtonDown(0) && Hand.Contains(hit.transform.gameObject))
@@ -188,10 +192,11 @@ public class DeckScript : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && Selected != null && hit.transform != null && hit.transform.CompareTag("Lane"))
         {
+            //print (hit.transform.position.ToString());
+            Selected.transform.SetParent(hit.transform);
+            Selected.transform.localPosition = Vector3.zero;
             print (Selected.transform.position.ToString());
-            Selected.transform.position = hit.transform.position;
-            print (Selected.transform.position.ToString());
-            print (hit.transform.position.ToString());
+            print (hit.transform.transform.name.ToString());
         }
 
 
