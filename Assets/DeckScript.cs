@@ -31,9 +31,6 @@ public class DeckScript : MonoBehaviour
 
     public GameObject Selected;
 
-    public List<GameObject> BeforePlayed = new List<GameObject>();
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -47,7 +44,7 @@ public class DeckScript : MonoBehaviour
 
 
         string[] lines = database.Split('\n');
-        float y2pos = 4.5f;
+        float y2pos = 0f;
 
 
 
@@ -57,7 +54,7 @@ public class DeckScript : MonoBehaviour
             string[] cols = line.Split(',');
 
             //creates a new card for each seperate card and puts them apart
-            GameObject newGO = Instantiate(prefab, new Vector3(8, y2pos, 7.5f), Quaternion.identity);
+            GameObject newGO = Instantiate(prefab, new Vector3(10.5f, y2pos, 1.5f), Quaternion.identity);
             CardScript newCard = newGO.GetComponent<CardScript>();
 
             //each of these make the seperated values into the stats which is used in the "card script"
@@ -70,8 +67,10 @@ public class DeckScript : MonoBehaviour
             Deck.Add(newGO);
 
             //this variabl;e is used to make the illusion of the cards being ontop of each other
-            y2pos = y2pos + 0.15f;
+            y2pos = y2pos + 0.2f;
         }
+
+        PlayedCards = new List<GameObject> { null, null, null, null };
 
         PlayedCards.Capacity = 4;
 
@@ -94,7 +93,7 @@ public class DeckScript : MonoBehaviour
         {
             // adds the card in position Deck[0] into the hand list and removes it from the position of Deck[0]
             Hand.Add(Deck[0]);
-            Deck[0].transform.position = new Vector3(CardPos, 6, -4.5f);
+            Deck[0].transform.position = new Vector3(CardPos, 0.5f, -10);
             Deck.RemoveAt(0);
             CardPos = CardPos + 3;
         }
@@ -105,24 +104,24 @@ public class DeckScript : MonoBehaviour
     {
         //function to draw from an alternate deck and garuntees a palyable card
         Hand.Add(Goats[0]);
-        Goats[0].transform.position = new Vector3(CardPos, 6, -4.5f);
+        Goats[0].transform.position = new Vector3(CardPos, 0.5f, -10);
         Goats.RemoveAt(0);
         CardPos = CardPos + 3;
     }
 
     public void SpawnGoats()
     {
-        float ypos = 4.5f;
+        float ypos = 0f;
         for (int i = 0; i < 10; i++)
         {
-            GameObject newGO = Instantiate(prefab, new Vector3(8, ypos, 2), Quaternion.identity);
+            GameObject newGO = Instantiate(prefab, new Vector3(10.5f, ypos, -4.5f), Quaternion.identity);
             CardScript newCard = newGO.GetComponent<CardScript>();
             newCard.CardName = "goat";
             newCard.CostStat = 0;
             newCard.PowerStat = 0;
             newCard.ToughnessStat = 1;
             Goats.Add(newGO);
-            ypos = ypos + 0.15f;
+            ypos = ypos + 0.2f;
         }
     }
 
@@ -186,17 +185,32 @@ public class DeckScript : MonoBehaviour
         {
             hit.transform.GetComponent<CardScript>().Select_Card();
             Selected = hit.transform.gameObject;
-            Hand.Remove(Selected);
 
         }
 
         if (Input.GetMouseButtonDown(0) && Selected != null && hit.transform != null && hit.transform.CompareTag("Lane"))
         {
             //print (hit.transform.position.ToString());
-            Selected.transform.SetParent(hit.transform);
-            Selected.transform.localPosition = Vector3.zero;
-            print (Selected.transform.position.ToString());
-            print (hit.transform.transform.name.ToString());
+
+            // takes the lane youve clicked on and puts the card into the list
+            int laneToUse = int.Parse(hit.transform.name);
+            if (PlayedCards[laneToUse] == null)
+            {
+                PlayedCards[laneToUse] = Selected.gameObject;
+                Selected.transform.SetParent(hit.transform);
+                Selected.transform.localPosition = Vector3.zero;
+                Hand.Remove(Selected);
+                Selected = null;
+            }
+            // ????
+            
+
+            // print (Selected.transform.position.ToString());
+            // print (hit.transform.transform.name.ToString());
+
+            // ????
+            
+            
         }
 
 
