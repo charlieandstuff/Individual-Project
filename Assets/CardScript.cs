@@ -6,8 +6,9 @@ using UnityEditor;
 using Unity.VisualScripting;
 public class CardScript : MonoBehaviour
 {
+    public DeckScript Deckscript;
 
-    public bool Selected;
+    public bool Selected; 
     public bool lerped = false;
 
     //this stores the data

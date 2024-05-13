@@ -31,8 +31,12 @@ public class DeckScript : MonoBehaviour
 
     public GameObject Selected;
 
+    public bool DrawPhase = true;
+    public bool PlayPhase = false;
+    public bool AttackPhases = false;
+
     // Start is called before the first frame update
-    void Start()
+    void Start() //insratinitaing the cards and givign them their values and stuff onto the card prefabs
     {
 
         string path = "Assets/cards.txt";
@@ -74,19 +78,13 @@ public class DeckScript : MonoBehaviour
 
         PlayedCards.Capacity = 4;
 
-
-
-
         // these run the functions at the start of scene
         reader.Close();
         ShuffleDeck();
         DrawThreeCards();
         SpawnGoats();
     }
-
-
-
-    public void DrawThreeCards()
+    public void DrawThreeCards() // how the starting cards are taken from the deck
     {
         // used to draw cards at start of game
         for (int i = 0; i < 3; i++)
@@ -97,16 +95,19 @@ public class DeckScript : MonoBehaviour
             Deck.RemoveAt(0);
             CardPos = CardPos + 3;
         }
-
-
     }
     public void DrawGoat()
     {
         //function to draw from an alternate deck and garuntees a palyable card
-        Hand.Add(Goats[0]);
-        Goats[0].transform.position = new Vector3(CardPos, 0.5f, -10);
-        Goats.RemoveAt(0);
-        CardPos = CardPos + 3;
+        if (DrawPhase == true)
+        {
+            Hand.Add(Goats[0]);
+            Goats[0].transform.position = new Vector3(CardPos, 0.5f, -10f);
+            Goats.RemoveAt(0);
+            CardPos = CardPos + 3;
+            DrawPhase = false;
+            PlayPhase = true;
+        }
     }
 
     public void SpawnGoats()
@@ -125,17 +126,21 @@ public class DeckScript : MonoBehaviour
         }
     }
 
-
     public void DrawDeckCard()
     {
+        if (DrawPhase == true)
+        {
+            Hand.Add(Deck[0]);
+            Deck[0].transform.position = new Vector3(CardPos, 0.5f, -10f);
+            Deck.RemoveAt(0);
+            CardPos = CardPos + 3;
+            DrawPhase = false;
+            PlayPhase = true;
+        }
         // add to hand
         //Instantiate(Deck[0]);
-        Hand.Add(Deck[0]);
-        Deck[0].transform.position = new Vector3(CardPos, 6, -4.5f);
-        Deck.RemoveAt(0);
-        CardPos = CardPos + 3;
-    }
 
+    }
 
     //swap function to shuffle the deck
     public void swap(int index1, int index2)
@@ -146,8 +151,6 @@ public class DeckScript : MonoBehaviour
         Deck[index2] = temp;
     }
 
-
-    //
     public void ShuffleDeck()
     {
         for (int i = 0; i < 100; i++)
@@ -161,8 +164,6 @@ public class DeckScript : MonoBehaviour
         }
     }
 
-
-
     private RaycastHit GetRayFromScreen() //returns the point of the screen the mouse is interacting with
     {
         Ray ray = PlayerCamera.ScreenPointToRay(Input.mousePosition);
@@ -175,17 +176,13 @@ public class DeckScript : MonoBehaviour
 
     }
 
-
-
-
-    private void Update() // to fix errors when mouse isnt ineracting with something on the screen
+    private void Update() // This is the playing card code it checks all the contions and whether a player can play the card they've selected
     {
         RaycastHit hit = GetRayFromScreen();
-        if (hit.transform != null && hit.transform.CompareTag("Card") && Input.GetMouseButtonDown(0) && Hand.Contains(hit.transform.gameObject))
+        if (hit.transform != null && hit.transform.CompareTag("Card") && Input.GetMouseButtonDown(0) && Hand.Contains(hit.transform.gameObject) && PlayPhase == true)
         {
             hit.transform.GetComponent<CardScript>().Select_Card();
             Selected = hit.transform.gameObject;
-
         }
 
         if (Input.GetMouseButtonDown(0) && Selected != null && hit.transform != null && hit.transform.CompareTag("Lane"))
