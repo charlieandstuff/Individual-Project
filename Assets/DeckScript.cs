@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.XR;
+using TMPro;
 
 public class DeckScript : MonoBehaviour
 {
@@ -31,13 +32,18 @@ public class DeckScript : MonoBehaviour
 
     public GameObject Selected;
 
+    public int PlayerHealth = 15;
+    public TextMeshProUGUI EnemyHealthGUI;
+    public int EnemyHealth = 15;
+
     public bool DrawPhase = true;
     public bool PlayPhase = false;
-    public bool AttackPhases = false;
+    public bool AttackPhase = false;
 
     // Start is called before the first frame update
     void Start() //insratinitaing the cards and givign them their values and stuff onto the card prefabs
     {
+        EnemyHealthGUI.text = EnemyHealth.ToString();
 
         string path = "Assets/cards.txt";
 
@@ -163,7 +169,11 @@ public class DeckScript : MonoBehaviour
 
         }
     }
-
+    public void EndTurn()
+    {
+        PlayPhase = false;
+        AttackPhase = true;
+    }
     private RaycastHit GetRayFromScreen() //returns the point of the screen the mouse is interacting with
     {
         Ray ray = PlayerCamera.ScreenPointToRay(Input.mousePosition);

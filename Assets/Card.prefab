@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f27e80f8ab0bcc41aa36f09a41d2024, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Deckscript: {fileID: 0}
   Selected: 0
   lerped: 0
   CardName: 
