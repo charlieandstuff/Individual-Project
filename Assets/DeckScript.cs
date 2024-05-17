@@ -20,6 +20,7 @@ public class DeckScript : MonoBehaviour
 
     public GameObject prefab;
 
+    // list for the deck of cards which player can draw
     public List<GameObject> Deck = new List<GameObject>();
 
     public List<GameObject> Hand = new List<GameObject>();
@@ -39,6 +40,7 @@ public class DeckScript : MonoBehaviour
     public bool DrawPhase = true;
     public bool PlayPhase = false;
     public bool AttackPhase = false;
+    public bool EnenemyPhase = false;
 
     // Start is called before the first frame update
     void Start() //insratinitaing the cards and givign them their values and stuff onto the card prefabs
@@ -220,7 +222,10 @@ public class DeckScript : MonoBehaviour
             
         }
 
+        if (AttackPhase == true)
+        {
 
+        }
 
     }
 }

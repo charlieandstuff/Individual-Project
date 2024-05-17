@@ -45,6 +45,7 @@ public class CardScript : MonoBehaviour
     void Update()
     {
 
+        
         if (Selected)
         {
             if (Input.GetMouseButtonDown(0))

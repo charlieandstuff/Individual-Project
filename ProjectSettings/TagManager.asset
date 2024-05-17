@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Card
   - Lane
+  - EnemyLane
   layers:
   - Default
   - TransparentFX
