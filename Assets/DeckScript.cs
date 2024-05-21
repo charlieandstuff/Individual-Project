@@ -29,6 +29,8 @@ public class DeckScript : MonoBehaviour
 
     public List<GameObject> PlayedCards = new List<GameObject>();
 
+    public List<GameObject> EnemyCards = new List<GameObject>();
+
     public float handxPos = 0;
 
     public GameObject Selected;
@@ -37,10 +39,12 @@ public class DeckScript : MonoBehaviour
     public TextMeshProUGUI EnemyHealthGUI;
     public int EnemyHealth = 15;
 
+    public int AttackLanes = 0;
+
     public bool DrawPhase = true;
     public bool PlayPhase = false;
     public bool AttackPhase = false;
-    public bool EnenemyPhase = false;
+    public bool EnemyPhase = false;
 
     // Start is called before the first frame update
     void Start() //insratinitaing the cards and givign them their values and stuff onto the card prefabs
@@ -83,8 +87,8 @@ public class DeckScript : MonoBehaviour
         }
 
         PlayedCards = new List<GameObject> { null, null, null, null };
-
-        PlayedCards.Capacity = 4;
+        EnemyCards = new List<GameObject> { null, null, null, null };
+        //PlayedCards.Capacity = 4;
 
         // these run the functions at the start of scene
         reader.Close();
@@ -173,8 +177,12 @@ public class DeckScript : MonoBehaviour
     }
     public void EndTurn()
     {
-        PlayPhase = false;
-        AttackPhase = true;
+        if (PlayPhase == true) 
+        {
+            PlayPhase = false;
+            AttackPhase = true;
+        }
+        
     }
     private RaycastHit GetRayFromScreen() //returns the point of the screen the mouse is interacting with
     {
@@ -224,7 +232,42 @@ public class DeckScript : MonoBehaviour
 
         if (AttackPhase == true)
         {
+            // function which takes a played cards power and reduces the enemyhealth down by the played cards power stat if there is no card opposing it
+            if (PlayedCards[AttackLanes] != null && EnemyCards[AttackLanes] == null)
+                {
+                // this is the part where it references the cardscript to obtain the "power" stat of the played card
+                EnemyHealth = EnemyHealth - PlayedCards[AttackLanes].GetComponent<CardScript>().PowerStat;
 
+                // this is to move the "attackLane" to go to the next "lane" in the played card script
+                AttackLanes = AttackLanes + 1;
+
+                // this is to show the affect the played cards power had on the enemy players health
+                EnemyHealthGUI.text = EnemyHealth.ToString();
+                }
+
+            // this function runs if there is a card opposing the played card and instead reduces the enemy cards health by the played cards power
+            // this is to check if a card opposes the played card
+            else if (PlayedCards[AttackLanes] != null && EnemyCards[AttackLanes] != null) 
+                {
+                //get the enemycards health stat and reduces it by the played cards power stat
+                EnemyCards[AttackLanes].GetComponent<CardScript>().ToughnessStat = EnemyCards[AttackLanes].GetComponent<CardScript>().ToughnessStat - PlayedCards[AttackLanes].GetComponent<CardScript>().PowerStat;
+                EnemyCards[AttackLanes].GetComponent<CardScript>().UpdateText();
+                AttackLanes = AttackLanes + 1;
+                }
+
+            // function to skip empty lanes
+            else if (PlayedCards[AttackLanes] = null) 
+            {
+                AttackLanes = AttackLanes + 1;
+            }
+
+            // function made to make the attack phase end after all lanes have been accounted for 
+            if (AttackLanes == 4)
+                {
+                AttackPhase = false;
+                AttackLanes = 0;
+                EnemyPhase = true;
+                }
         }
 
     }

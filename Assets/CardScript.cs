@@ -34,6 +34,16 @@ public class CardScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //gameObject.name = CardName;
+        //CardNameGUI.text = CardName;
+        //PowerStatGUI.text = PowerStat.ToString();
+        //ToughnessStatGUI.text = ToughnessStat.ToString();
+        //CostStatGUI.text = CostStat.ToString();
+        UpdateText();
+    }
+
+    public void UpdateText() 
+    {
         gameObject.name = CardName;
         CardNameGUI.text = CardName;
         PowerStatGUI.text = PowerStat.ToString();
