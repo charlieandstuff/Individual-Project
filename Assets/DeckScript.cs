@@ -175,6 +175,14 @@ public class DeckScript : MonoBehaviour
 
         }
     }
+
+    public void SacrificeCard(RaycastHit hit)
+    {
+        if (PlayPhase == true && Input.GetMouseButtonDown(0) && hit.transform != null && hit.transform.CompareTag("Card") && PlayedCards.Contains(hit.transform.gameObject))
+        {
+        
+        }
+    }
     public void EndTurn()
     {
         if (PlayPhase == true) 
