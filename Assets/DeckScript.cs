@@ -37,20 +37,25 @@ public class DeckScript : MonoBehaviour
 
     public int PlayerHealth = 15;
     public TextMeshProUGUI EnemyHealthGUI;
+    public TextMeshProUGUI PlayerHealthGUI;
+    public TextMeshProUGUI BloodMoneyGUI;
     public int EnemyHealth = 15;
 
     public int AttackLanes = 0;
+
+    public int BloodMoney = 0;
 
     public bool DrawPhase = true;
     public bool PlayPhase = false;
     public bool AttackPhase = false;
     public bool EnemyPhase = false;
+    public bool SacrificePhase = false;
 
     // Start is called before the first frame update
     void Start() //insratinitaing the cards and givign them their values and stuff onto the card prefabs
     {
         EnemyHealthGUI.text = EnemyHealth.ToString();
-
+        BloodMoneyGUI.text = BloodMoney.ToString();
         string path = "Assets/cards.txt";
 
         //Read the text from directly from the test.txt file
@@ -176,13 +181,15 @@ public class DeckScript : MonoBehaviour
         }
     }
 
-    public void SacrificeCard(RaycastHit hit)
+    public void SacrificeCard()
     {
-        if (PlayPhase == true && Input.GetMouseButtonDown(0) && hit.transform != null && hit.transform.CompareTag("Card") && PlayedCards.Contains(hit.transform.gameObject))
+        if (PlayPhase == true)
         {
-        
+            PlayPhase = false;
+            SacrificePhase = true;
         }
-    }
+    }   
+
     public void EndTurn()
     {
         if (PlayPhase == true) 
@@ -207,13 +214,23 @@ public class DeckScript : MonoBehaviour
     private void Update() // This is the playing card code it checks all the contions and whether a player can play the card they've selected
     {
         RaycastHit hit = GetRayFromScreen();
-        if (hit.transform != null && hit.transform.CompareTag("Card") && Input.GetMouseButtonDown(0) && Hand.Contains(hit.transform.gameObject) && PlayPhase == true)
+        if (hit.transform != null && hit.transform.CompareTag("Card") && Input.GetMouseButtonDown(0) && Hand.Contains(hit.transform.gameObject) && PlayPhase)
         {
             hit.transform.GetComponent<CardScript>().Select_Card();
             Selected = hit.transform.gameObject;
         }
 
-        if (Input.GetMouseButtonDown(0) && Selected != null && hit.transform != null && hit.transform.CompareTag("Lane"))
+        // Sacrifice Phase
+        if (Input.GetMouseButtonDown(0) && hit.transform != null && hit.transform.CompareTag("Card") && PlayedCards.Contains(hit.transform.gameObject) && SacrificePhase)
+        {
+            Destroy(gameObject);
+            BloodMoney = BloodMoney + 1;
+            BloodMoneyGUI.text = BloodMoney.ToString();
+            SacrificePhase = false;
+            PlayPhase = true;
+        }
+
+        if (Input.GetMouseButtonDown(0) && Selected != null && hit.transform != null && hit.transform.CompareTag("Lane") && Selected.GetComponent<CardScript>().CostStat == BloodMoney)
         {
             //print (hit.transform.position.ToString());
 
@@ -221,11 +238,13 @@ public class DeckScript : MonoBehaviour
             int laneToUse = int.Parse(hit.transform.name);
             if (PlayedCards[laneToUse] == null)
             {
+                BloodMoney = BloodMoney - Selected.GetComponent<CardScript>().CostStat;
                 PlayedCards[laneToUse] = Selected.gameObject;
                 Selected.transform.SetParent(hit.transform);
                 Selected.transform.localPosition = Vector3.zero;
                 Hand.Remove(Selected);
                 Selected = null;
+                BloodMoneyGUI.text = BloodMoney.ToString();
             }
             // ????
             
