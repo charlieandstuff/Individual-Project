@@ -18,6 +18,7 @@ public class DeckScript : MonoBehaviour
 
     float CardPos = -12;
 
+    // prefab for the cards
     public GameObject prefab;
 
     // list for the deck of cards which player can draw
@@ -33,6 +34,8 @@ public class DeckScript : MonoBehaviour
 
     public float handxPos = 0;
 
+
+    // the object selected to be played
     public GameObject Selected;
 
     public int PlayerHealth = 15;
@@ -50,6 +53,7 @@ public class DeckScript : MonoBehaviour
     public bool AttackPhase = false;
     public bool EnemyPhase = false;
     public bool SacrificePhase = false;
+    public bool DebugMode = false;
 
     // Start is called before the first frame update
     void Start() //insratinitaing the cards and givign them their values and stuff onto the card prefabs
@@ -101,6 +105,17 @@ public class DeckScript : MonoBehaviour
         DrawThreeCards();
         SpawnGoats();
     }
+
+
+    // used to make temperary print statements
+    void Debug(string msg)
+    {
+        if(DebugMode)
+        {
+            print(msg);
+        }        
+    }
+
     public void DrawThreeCards() // how the starting cards are taken from the deck
     {
         // used to draw cards at start of game
@@ -127,7 +142,7 @@ public class DeckScript : MonoBehaviour
         }
     }
 
-    public void SpawnGoats()
+    public void SpawnGoats() // used to create the deck of goats
     {
         float ypos = 0f;
         for (int i = 0; i < 10; i++)
@@ -218,12 +233,18 @@ public class DeckScript : MonoBehaviour
         {
             hit.transform.GetComponent<CardScript>().Select_Card();
             Selected = hit.transform.gameObject;
+            Debug(Selected.name);
         }
 
         // Sacrifice Phase
-        if (Input.GetMouseButtonDown(0) && hit.transform != null && hit.transform.CompareTag("Card") && PlayedCards.Contains(hit.transform.gameObject) && SacrificePhase)
+       
+       
+        if (SacrificePhase == true && Input.GetMouseButtonDown(0) && hit.transform != null && hit.transform.CompareTag("Card") && PlayedCards.Contains(hit.transform.gameObject))
         {
-            Destroy(gameObject);
+            print(gameObject);
+            int index = PlayedCards.IndexOf(hit.transform.gameObject);
+            PlayedCards[index] = null;
+            Destroy(hit.transform.gameObject);
             BloodMoney = BloodMoney + 1;
             BloodMoneyGUI.text = BloodMoney.ToString();
             SacrificePhase = false;
