@@ -1,9 +1,15 @@
 
 //todo
-// make a "playedCards" list
-// make a "enemyplayedCards" list
-// make it so the cards can attack
-// 
+// make a "enemy' (script that reacts to players moves)
+// Enemy will not follow rules like costs but to level the playing feild you can see their moves a turn ahead
+// make a list for enemy pre played cards
+// make enemy be able to instatiate cards
+// makde enemy kill visoli 
+// make enemy be able to end its turn
+// add card abilities
+// add a "difficulty" to the enemy that can scale
+//add customisability to deck
+
 
 
 using System.Collections.Generic;
@@ -285,10 +291,10 @@ public class DeckScript : MonoBehaviour
                 {
                 // this is the part where it references the cardscript to obtain the "power" stat of the played card
                 EnemyHealth = EnemyHealth - PlayedCards[AttackLanes].GetComponent<CardScript>().PowerStat;
-
+                
                 // this is to move the "attackLane" to go to the next "lane" in the played card script
                 AttackLanes = AttackLanes + 1;
-
+                
                 // this is to show the affect the played cards power had on the enemy players health
                 EnemyHealthGUI.text = EnemyHealth.ToString();
                 }
@@ -300,15 +306,19 @@ public class DeckScript : MonoBehaviour
                 //get the enemycards health stat and reduces it by the played cards power stat
                 EnemyCards[AttackLanes].GetComponent<CardScript>().ToughnessStat = EnemyCards[AttackLanes].GetComponent<CardScript>().ToughnessStat - PlayedCards[AttackLanes].GetComponent<CardScript>().PowerStat;
                 EnemyCards[AttackLanes].GetComponent<CardScript>().UpdateText();
+               
                 AttackLanes = AttackLanes + 1;
-                }
-
-            // function to skip empty lanes
-            else if (PlayedCards[AttackLanes] = null) 
-            {
-                AttackLanes = AttackLanes + 1;
+                
             }
 
+            // function to skip empty lanes
+            else if (PlayedCards[AttackLanes] == null) 
+            {
+                
+                AttackLanes = AttackLanes + 1;
+                
+            }
+           
             // function made to make the attack phase end after all lanes have been accounted for 
             if (AttackLanes == 4)
                 {
