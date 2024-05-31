@@ -38,6 +38,8 @@ public class DeckScript : MonoBehaviour
 
     public List<GameObject> EnemyCards = new List<GameObject>();
 
+    public List<GameObject> EnemySelectable = new List<GameObject>();
+
     public float handxPos = 0;
 
 
@@ -80,7 +82,7 @@ public class DeckScript : MonoBehaviour
 
 
         foreach (string line in lines)
-        { 
+        {
             //this line splits the string at each comma to get seperated values
             string[] cols = line.Split(',');
 
@@ -96,7 +98,7 @@ public class DeckScript : MonoBehaviour
 
             //adds the  new card to the "Deck Script"
             Deck.Add(newGO);
-
+            EnemySelectable.Add(newGO);
             //this variabl;e is used to make the illusion of the cards being ontop of each other
             y2pos = y2pos + 0.2f;
         }
@@ -116,10 +118,10 @@ public class DeckScript : MonoBehaviour
     // used to make temperary print statements
     void Debug(string msg)
     {
-        if(DebugMode)
+        if (DebugMode)
         {
             print(msg);
-        }        
+        }
     }
 
     public void DrawThreeCards() // how the starting cards are taken from the deck
@@ -209,16 +211,16 @@ public class DeckScript : MonoBehaviour
             PlayPhase = false;
             SacrificePhase = true;
         }
-    }   
+    }
 
     public void EndTurn()
     {
-        if (PlayPhase == true) 
+        if (PlayPhase == true)
         {
             PlayPhase = false;
             AttackPhase = true;
         }
-        
+
     }
     private RaycastHit GetRayFromScreen() //returns the point of the screen the mouse is interacting with
     {
@@ -226,7 +228,7 @@ public class DeckScript : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-           
+
         }
         return hit;
 
@@ -243,11 +245,11 @@ public class DeckScript : MonoBehaviour
         }
 
         // Sacrifice Phase
-       
-       
+
+
         if (SacrificePhase == true && Input.GetMouseButtonDown(0) && hit.transform != null && hit.transform.CompareTag("Card") && PlayedCards.Contains(hit.transform.gameObject))
         {
-            print(gameObject);
+            print(hit.transform.gameObject);
             int index = PlayedCards.IndexOf(hit.transform.gameObject);
             PlayedCards[index] = null;
             Destroy(hit.transform.gameObject);
@@ -257,7 +259,7 @@ public class DeckScript : MonoBehaviour
             PlayPhase = true;
         }
 
-        if (Input.GetMouseButtonDown(0) && Selected != null && hit.transform != null && hit.transform.CompareTag("Lane") && Selected.GetComponent<CardScript>().CostStat == BloodMoney)
+        if (Input.GetMouseButtonDown(0) && Selected != null && hit.transform != null && hit.transform.CompareTag("Lane") && Selected.GetComponent<CardScript>().CostStat >= BloodMoney)
         {
             //print (hit.transform.position.ToString());
 
@@ -274,59 +276,107 @@ public class DeckScript : MonoBehaviour
                 BloodMoneyGUI.text = BloodMoney.ToString();
             }
             // ????
-            
+
 
             // print (Selected.transform.position.ToString());
             // print (hit.transform.transform.name.ToString());
 
             // ????
-            
-            
+
+
         }
 
         if (AttackPhase == true)
         {
             // function which takes a played cards power and reduces the enemyhealth down by the played cards power stat if there is no card opposing it
             if (PlayedCards[AttackLanes] != null && EnemyCards[AttackLanes] == null)
-                {
+            {
                 // this is the part where it references the cardscript to obtain the "power" stat of the played card
                 EnemyHealth = EnemyHealth - PlayedCards[AttackLanes].GetComponent<CardScript>().PowerStat;
-                
+
                 // this is to move the "attackLane" to go to the next "lane" in the played card script
                 AttackLanes = AttackLanes + 1;
-                
+
                 // this is to show the affect the played cards power had on the enemy players health
                 EnemyHealthGUI.text = EnemyHealth.ToString();
-                }
+            }
 
             // this function runs if there is a card opposing the played card and instead reduces the enemy cards health by the played cards power
             // this is to check if a card opposes the played card
-            else if (PlayedCards[AttackLanes] != null && EnemyCards[AttackLanes] != null) 
-                {
+            else if (PlayedCards[AttackLanes] != null && EnemyCards[AttackLanes] != null)
+            {
                 //get the enemycards health stat and reduces it by the played cards power stat
                 EnemyCards[AttackLanes].GetComponent<CardScript>().ToughnessStat = EnemyCards[AttackLanes].GetComponent<CardScript>().ToughnessStat - PlayedCards[AttackLanes].GetComponent<CardScript>().PowerStat;
                 EnemyCards[AttackLanes].GetComponent<CardScript>().UpdateText();
-               
+
                 AttackLanes = AttackLanes + 1;
-                
+
             }
 
             // function to skip empty lanes
-            else if (PlayedCards[AttackLanes] == null) 
+            else if (PlayedCards[AttackLanes] == null)
             {
-                
+
                 AttackLanes = AttackLanes + 1;
-                
+
             }
-           
+
             // function made to make the attack phase end after all lanes have been accounted for 
             if (AttackLanes == 4)
-                {
+            {
                 AttackPhase = false;
                 AttackLanes = 0;
                 EnemyPhase = true;
-                }
+            }
+
         }
 
+        if (EnemyPhase == true)
+        {
+            // Choose a random card from EnemySelectable
+            int chosen = Random.Range(0, EnemySelectable.Count);
+
+            // Find an empty lane
+            int laneToUse = -1;
+            for (int i = 0; i < EnemyCards.Count; i++)
+            {
+                if (EnemyCards[i] == null)
+                {
+                    laneToUse = i;
+                    break;
+                }
+            }
+
+            // If an empty lane is found, instantiate the card and place it in the lane
+            if (laneToUse != -1)
+            {
+                GameObject newCard = Instantiate(EnemySelectable[chosen], new Vector3(10.5f, 100, 1.5f), Quaternion.identity);
+                EnemyCards[laneToUse] = newCard;
+
+                // Set the position of the card to the lane position
+                // Assuming you have predefined positions for enemy lanes
+                Vector3 lanePosition = GetEnemyLanePosition(laneToUse);
+                newCard.transform.position = lanePosition;
+            }
+
+            // End the enemy phase and start the draw phase
+            EnemyPhase = false;
+            DrawPhase = true;
+        }
+        // Helper method to get the position of the enemy lane
+        Vector3 GetEnemyLanePosition(int laneIndex)
+        {
+            // Define your lane positions here
+            // Example positions, you should replace these with your actual lane positions
+            Vector3[] lanePositions = new Vector3[]
+            {
+        new Vector3(-11, 1, 4),
+        new Vector3(-6, 1, 4),
+        new Vector3(-1, 1, 4),
+        new Vector3(4, 1, 4)
+            };
+
+            return lanePositions[laneIndex];
+        }
     }
 }
